@@ -17,43 +17,35 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-
 public class User implements UserDetails {
 
     @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
-    private Long id;
-    private String username;
-    private String password;
-    private String email;
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    private long id;
     private String name;
+    private String username;
+    private String email;
+    private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private Boolean enabled;
     private Boolean locked;
+    private Boolean enabled;
 
-    public User(String username, String password, String email, String name, UserRole userRole, Boolean enabled, Boolean locked) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    public User(String name, String username, String email, String password, UserRole userRole, Boolean locked, Boolean enabled) {
         this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.userRole = userRole;
-        this.enabled = enabled;
         this.locked = locked;
+        this.enabled = enabled;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
-        return Collections.singletonList(authority);
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(simpleGrantedAuthority);
     }
 
     @Override
@@ -68,21 +60,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return UserDetails.super.isAccountNonExpired(); //return true
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return UserDetails.super.isAccountNonLocked(); //return !locked
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return UserDetails.super.isCredentialsNonExpired(); //return true
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return UserDetails.super.isEnabled(); //return enabled
     }
 }

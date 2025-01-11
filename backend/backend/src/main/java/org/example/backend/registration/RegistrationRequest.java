@@ -1,15 +1,11 @@
 package org.example.backend.registration;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode
-
+@ToString
 public class RegistrationRequest {
     private final String firstName;
     private final String lastName;
