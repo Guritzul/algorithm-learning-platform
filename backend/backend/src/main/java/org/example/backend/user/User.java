@@ -19,27 +19,25 @@ import java.util.Collections;
 @Entity
 public class User implements UserDetails {
 
-    @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private long id;
-    private String name;
-    private String username;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private Boolean locked;
-    private Boolean enabled;
+    private Boolean locked = false;
+    private Boolean enabled = false;
 
-    public User(String name, String username, String email, String password, UserRole userRole, Boolean locked, Boolean enabled) {
-        this.name = name;
-        this.username = username;
+    public User(String firstName, String lastName, String email, String password, UserRole userRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     @Override
@@ -55,26 +53,34 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired(); //return true
+        return true; //return true
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked(); //return !locked
+        return !locked; //return !locked
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired(); //return true
+        return true; //return true
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled(); //return enabled
+        return enabled; //return enabled
     }
 }
